@@ -19,7 +19,24 @@ public class ProductServlet extends HttpServlet {
     public void init() {
         productDAO = new ProductDAO();
     }
+    private static final Logger LOGGER = Logger.getLogger(ProductServlet.class.getName());
 
+    public void init() throws ServletException {
+        try {
+            // Kiểm tra kết nối cơ sở dữ liệu
+            DatabaseConnection.getConnection();
+            LOGGER.info("Kết nối cơ sở dữ liệu thành công");
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Lỗi kết nối cơ sở dữ liệu", e);
+            throw new ServletException("Không thể kết nối cơ sở dữ liệu", e);
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        LOGGER.info("ProductServlet: Đã nhận yêu cầu GET");
+        // Mã xử lý servlet
+    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");

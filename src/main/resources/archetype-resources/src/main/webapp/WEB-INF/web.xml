@@ -6,7 +6,6 @@
          version="4.0">
     <display-name>ShopCart Web Application</display-name>
 
-    <!-- Servlet Mappings -->
     <servlet>
         <servlet-name>ProductServlet</servlet-name>
         <servlet-class>com.shopcart.controller.ProductServlet</servlet-class>
@@ -16,7 +15,6 @@
         <url-pattern>/products</url-pattern>
     </servlet-mapping>
 
-    <!-- Welcome Files -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>products</welcome-file>
