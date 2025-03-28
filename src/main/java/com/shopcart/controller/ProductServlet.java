@@ -2,6 +2,7 @@ package com.shopcart.controller;
 
 import com.shopcart.dao.ProductDAO;
 import com.shopcart.model.Product;
+import com.shopcart.util.DatabaseConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,20 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/products")
 public class ProductServlet extends HttpServlet {
     private ProductDAO productDAO;
 
-    public void init() {
-        productDAO = new ProductDAO();
-    }
     private static final Logger LOGGER = Logger.getLogger(ProductServlet.class.getName());
 
     public void init() throws ServletException {
         try {
             // Kiểm tra kết nối cơ sở dữ liệu
             DatabaseConnection.getConnection();
+            productDAO = new ProductDAO();
             LOGGER.info("Kết nối cơ sở dữ liệu thành công");
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Lỗi kết nối cơ sở dữ liệu", e);
@@ -32,11 +33,6 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        LOGGER.info("ProductServlet: Đã nhận yêu cầu GET");
-        // Mã xử lý servlet
-    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
