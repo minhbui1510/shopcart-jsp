@@ -2,130 +2,36 @@ package com.shopcart.controller;
 
 import com.shopcart.dao.ProductDAO;
 import com.shopcart.model.Product;
-import com.shopcart.util.DatabaseConnection;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @WebServlet("/products")
 public class ProductServlet extends HttpServlet {
-    private ProductDAO productDAO;
 
-    private static final Logger LOGGER = Logger.getLogger(ProductServlet.class.getName());
+    private ProductDAO productDAO = new ProductDAO();
 
-    public void init() throws ServletException {
-        try {
-            // Kiểm tra kết nối cơ sở dữ liệu
-            DatabaseConnection.getConnection();
-            productDAO = new ProductDAO();
-            LOGGER.info("Kết nối cơ sở dữ liệu thành công");
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Lỗi kết nối cơ sở dữ liệu", e);
-            throw new ServletException("Không thể kết nối cơ sở dữ liệu", e);
-        }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        try {
-            if (action == null) {
-                listProducts(request, response);
-            } else {
-                switch (action) {
-                    case "new":
-                        showNewForm(request, response);
-                        break;
-                    case "edit":
-                        showEditForm(request, response);
-                        break;
-                    case "delete":
-                        deleteProduct(request, response);
-                        break;
-                    default:
-                        listProducts(request, response);
-                }
-            }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
+        if (action == null) {
+            // Display all products
+            List<Product> productList = productDAO.getAllProducts();
+            request.setAttribute("products", productList);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        } else if (action.equals("details")) {
+            // Display product details
+            int productId = Integer.parseInt(request.getParameter("id"));
+            Product product = productDAO.getProductById(productId);
+
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("/product-details.jsp").forward(request, response);
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        try {
-            if ("create".equals(action)) {
-                insertProduct(request, response);
-            } else if ("update".equals(action)) {
-                updateProduct(request, response);
-            }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
-        }
-    }
-
-    private void listProducts(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        List<Product> listProducts = productDAO.getAllProducts();
-        request.setAttribute("listProducts", listProducts);
-        request.getRequestDispatcher("/views/product/list.jsp").forward(request, response);
-    }
-
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/views/product/form.jsp").forward(request, response);
-    }
-
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Product existingProduct = productDAO.getProductById(id);
-        request.setAttribute("product", existingProduct);
-        request.getRequestDispatcher("/views/product/form.jsp").forward(request, response);
-    }
-
-    private void insertProduct(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        String name = request.getParameter("name");
-        double price = Double.parseDouble(request.getParameter("price"));
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        int stock = Integer.parseInt(request.getParameter("stock"));
-
-        Product newProduct = new Product(0, name, price, description, image, stock);
-        productDAO.addProduct(newProduct);
-        response.sendRedirect("products");
-    }
-
-    private void updateProduct(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        double price = Double.parseDouble(request.getParameter("price"));
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        int stock = Integer.parseInt(request.getParameter("stock"));
-
-        Product product = new Product(id, name, price, description, image, stock);
-        productDAO.updateProduct(product);
-        response.sendRedirect("products");
-    }
-
-    private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        productDAO.deleteProduct(id);
-        response.sendRedirect("products");
     }
 }

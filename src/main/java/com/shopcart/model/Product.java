@@ -3,34 +3,68 @@ package com.shopcart.model;
 public class Product {
     private int id;
     private String name;
-    private double price;
     private String description;
-    private String image;
-    private int stock;
+    private double price;
+    private String imageUrl;
+    private int stockQuantity;
 
-    // Constructors
     public Product() {}
 
-    public Product(int id, String name, double price, String description, String image, int stock) {
+    public Product(int id, String name, String description, double price, String imageUrl, int stockQuantity) {
         this.id = id;
         this.name = name;
-        this.price = price;
         this.description = description;
-        this.image = image;
-        this.stock = stock;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.stockQuantity = stockQuantity;
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getImage() { return image; }
-    public void setImage(String image) { this.image = image; }
-    public int getStock() { return stock; }
-    public void setStock(int stock) { this.stock = stock; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
 }
