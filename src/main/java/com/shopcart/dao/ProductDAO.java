@@ -13,7 +13,7 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM products")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM products ORDER BY id DESC")) {
 
             while (rs.next()) {
                 Product product = new Product();
@@ -53,5 +53,68 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return product;
+    }
+
+    public boolean addProduct(Product product) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "INSERT INTO products (name, description, price, image_url, stock_quantity) VALUES (?, ?, ?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getDescription());
+            ps.setDouble(3, product.getPrice());
+            ps.setString(4, product.getImageUrl());
+            ps.setInt(5, product.getStockQuantity());
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        product.setId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateProduct(Product product) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE products SET name = ?, description = ?, price = ?, image_url = ?, stock_quantity = ? WHERE id = ?")) {
+
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getDescription());
+            ps.setDouble(3, product.getPrice());
+            ps.setString(4, product.getImageUrl());
+            ps.setInt(5, product.getStockQuantity());
+            ps.setInt(6, product.getId());
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteProduct(int id) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM products WHERE id = ?")) {
+
+            ps.setInt(1, id);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

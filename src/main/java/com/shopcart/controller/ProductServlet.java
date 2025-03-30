@@ -2,12 +2,14 @@ package com.shopcart.controller;
 
 import com.shopcart.dao.ProductDAO;
 import com.shopcart.model.Product;
+import com.shopcart.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,6 +21,15 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+
+        // Check if user is logged in and get user role
+        HttpSession session = request.getSession(false);
+        User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
+        boolean isAdmin = (currentUser != null && currentUser.isAdmin());
+        System.out.println("user: " + currentUser);
+        System.out.println("isAdmin: " + isAdmin);
+        // Add isAdmin attribute to the request (for use in JSPs)
+        request.setAttribute("isAdmin", isAdmin);
 
         if (action == null) {
             // Display all products
@@ -32,6 +43,79 @@ public class ProductServlet extends HttpServlet {
 
             request.setAttribute("product", product);
             request.getRequestDispatcher("/product-details.jsp").forward(request, response);
+        } else if (action.equals("add") && isAdmin) {
+            // Show add product form (admin only)
+            request.getRequestDispatcher("/product-form.jsp").forward(request, response);
+        } else if (action.equals("edit") && isAdmin) {
+            // Show edit product form (admin only)
+            int productId = Integer.parseInt(request.getParameter("id"));
+            Product product = productDAO.getProductById(productId);
+
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("/product-form.jsp").forward(request, response);
+        } else if (action.equals("delete") && isAdmin) {
+            // Delete product (admin only)
+            int productId = Integer.parseInt(request.getParameter("id"));
+            productDAO.deleteProduct(productId);
+
+            response.sendRedirect("products");
+        } else {
+            // Unauthorized or unknown action, redirect to product listing
+            response.sendRedirect("products");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        // Check if user is logged in and has admin role
+        HttpSession session = request.getSession(false);
+        User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
+        boolean isAdmin = (currentUser != null && currentUser.isAdmin());
+
+        if (!isAdmin) {
+            response.sendRedirect("products");
+            return;
+        }
+
+        // Process admin actions
+        if ("save".equals(action)) {
+            // Get form parameters
+            String productIdStr = request.getParameter("id");
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            double price = Double.parseDouble(request.getParameter("price"));
+            String imageUrl = request.getParameter("imageUrl");
+            int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
+
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setImageUrl(imageUrl);
+            product.setStockQuantity(stockQuantity);
+
+            boolean success;
+            if (productIdStr != null && !productIdStr.isEmpty()) {
+                // Update existing product
+                int productId = Integer.parseInt(productIdStr);
+                product.setId(productId);
+                success = productDAO.updateProduct(product);
+            } else {
+                // Add new product
+                success = productDAO.addProduct(product);
+            }
+
+            if (success) {
+                response.sendRedirect("products");
+            } else {
+                request.setAttribute("error", "Failed to save the product");
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("/product-form.jsp").forward(request, response);
+            }
+        } else {
+            response.sendRedirect("products");
         }
     }
 }
