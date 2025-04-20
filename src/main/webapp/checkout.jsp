@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <h1>Checkout</h1>
 
     <div class="row mt-4">

@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">

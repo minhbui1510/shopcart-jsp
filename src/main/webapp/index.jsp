@@ -40,7 +40,7 @@
         <c:forEach items="${products}" var="product">
             <div class="col-md-4">
                 <div class="card product-card">
-                    <img src="assets/ngockem.jpeg" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                    <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">${product.price} USD</p>

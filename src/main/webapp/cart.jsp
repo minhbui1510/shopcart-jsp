@@ -12,7 +12,7 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <h1>Your Shopping Cart</h1>
 
     <c:choose>
@@ -37,7 +37,7 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="assets/ngockem.jpeg" alt="${item.product.name}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="${item.product.imageUrl}" alt="${item.product.name}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
                                 <span>${item.product.name}</span>
                             </div>
                         </td>

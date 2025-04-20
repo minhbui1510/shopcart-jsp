@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="jumbotron text-center">
         <h1 class="display-4">Thank You!</h1>
         <p class="lead">Your order has been placed successfully.</p>

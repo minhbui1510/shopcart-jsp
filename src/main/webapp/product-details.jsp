@@ -11,10 +11,10 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="row">
         <div class="col-md-6">
-            <img src="assets/ngockem.jpeg" alt="${product.name}" class="img-fluid">
+            <img src="${product.imageUrl}" alt="${product.name}" class="img-fluid">
         </div>
         <div class="col-md-6">
             <h1>${product.name}</h1>
@@ -30,14 +30,14 @@
                     <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stockQuantity}" class="form-control w-25">
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                <button type="submit" class="btn btn-primary btn-lg">Thêm vào giỏ hàng</button>
             </form>
 
             <div class="mt-3">
                 <p>Available Stock: ${product.stockQuantity}</p>
             </div>
 
-            <a href="products" class="btn btn-secondary mt-3">Back to Products</a>
+            <a href="products" class="btn btn-secondary mt-3">Quay lại</a>
         </div>
     </div>
 </div>
