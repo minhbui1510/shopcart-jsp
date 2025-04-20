@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Shopping Cart - Online Store</title>
+    <title>Giỏ Hàng - Cửa Hàng Trực Tuyến</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
@@ -13,23 +13,23 @@
 <jsp:include page="header.jsp" />
 
 <div class="container mt-4 mb-4">
-    <h1>Your Shopping Cart</h1>
+    <h1>Giỏ Hàng Của Bạn</h1>
 
     <c:choose>
         <c:when test="${empty cart.items}">
             <div class="alert alert-info mt-3">
-                Your cart is empty. <a href="products">Continue shopping</a>
+                Giỏ hàng của bạn đang trống. <a href="products">Tiếp tục mua sắm</a>
             </div>
         </c:when>
         <c:otherwise>
             <table class="table table-striped mt-3">
                 <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Actions</th>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,22 +41,22 @@
                                 <span>${item.product.name}</span>
                             </div>
                         </td>
-                        <td>${item.product.price} USD</td>
+                        <td>${item.product.price} VND</td>
                         <td>
                             <form action="cart" method="post" class="form-inline">
                                 <input type="hidden" name="action" value="update">
                                 <input type="hidden" name="productId" value="${item.product.id}">
                                 <input type="number" name="quantity" value="${item.quantity}" min="1" class="form-control mr-2" style="width: 60px;">
-                                <button type="submit" class="btn btn-sm btn-secondary">Update</button>
+                                <button type="submit" class="btn btn-sm btn-secondary">Cập nhật</button>
                             </form>
                         </td>
-                        <td>${item.subtotal} USD</td>
+                        <td>${item.subtotal} VND</td>
                         <td>
                             <form action="cart" method="post">
                                 <input type="hidden" name="action" value="remove">
                                 <input type="hidden" name="productId" value="${item.product.id}">
                                 <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i> Remove
+                                    <i class="fas fa-trash"></i> Xóa
                                 </button>
                             </form>
                         </td>
@@ -65,21 +65,21 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                    <td><strong>${cart.totalPrice} USD</strong></td>
+                    <td colspan="3" class="text-right"><strong>Tổng cộng:</strong></td>
+                    <td><strong>${cart.totalPrice} VND</strong></td>
                     <td></td>
                 </tr>
                 </tfoot>
             </table>
 
             <div class="d-flex justify-content-between mt-3">
-                <a href="products" class="btn btn-secondary">Continue Shopping</a>
+                <a href="products" class="btn btn-secondary">Tiếp tục mua sắm</a>
                 <div>
                     <form action="cart" method="post" class="d-inline mr-2">
                         <input type="hidden" name="action" value="clear">
-                        <button type="submit" class="btn btn-warning">Clear Cart</button>
+                        <button type="submit" class="btn btn-warning">Dọn giỏ hàng</button>
                     </form>
-                    <a href="checkout" class="btn btn-success">Proceed to Checkout</a>
+                    <a href="checkout" class="btn btn-success">Đặt đơn</a>
                 </div>
             </div>
         </c:otherwise>
@@ -89,4 +89,7 @@
 <jsp:include page="footer.jsp" />
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

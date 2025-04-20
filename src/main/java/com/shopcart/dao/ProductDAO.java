@@ -1,6 +1,7 @@
 package com.shopcart.dao;
 
 import com.shopcart.model.Product;
+import com.shopcart.model.OrderItem;
 import com.shopcart.util.DBConnection;
 
 import java.sql.*;
@@ -109,6 +110,43 @@ public class ProductDAO {
              PreparedStatement ps = conn.prepareStatement("DELETE FROM products WHERE id = ?")) {
 
             ps.setInt(1, id);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean hasEnoughStock(int productId, int requestedQuantity) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT stock_quantity FROM products WHERE id = ?")) {
+
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int stockQuantity = rs.getInt("stock_quantity");
+                return stockQuantity >= requestedQuantity;
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean reduceStockQuantity(int productId, int quantity) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ? AND stock_quantity >= ?")) {
+
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            ps.setInt(3, quantity); // Ensure we have enough stock
 
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;

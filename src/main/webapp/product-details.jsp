@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>${product.name} - Online Store</title>
+    <title>${product.name}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-6">
             <h1>${product.name}</h1>
-            <p class="lead">${product.price} USD</p>
+            <p class="lead">${product.price} VND</p>
             <p>${product.description}</p>
 
             <form action="cart" method="post" class="mb-3">
@@ -26,15 +26,22 @@
                 <input type="hidden" name="productId" value="${product.id}">
 
                 <div class="form-group">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stockQuantity}" class="form-control w-25">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stockQuantity}" class="form-control w-25" <c:if test="${product.stockQuantity == 0}">disabled</c:if>>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg">Thêm vào giỏ hàng</button>
+                <button type="submit" class="btn btn-primary btn-lg" <c:if test="${product.stockQuantity == 0}">disabled</c:if>>Thêm vào giỏ hàng</button>
             </form>
 
             <div class="mt-3">
-                <p>Available Stock: ${product.stockQuantity}</p>
+                <c:choose>
+                    <c:when test="${product.stockQuantity == 0}">
+                        <p class="text-danger font-weight-bold">Hết hàng</p>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Tồn kho: ${product.stockQuantity}</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <a href="products" class="btn btn-secondary mt-3">Quay lại</a>

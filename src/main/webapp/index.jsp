@@ -31,7 +31,7 @@
         <h1>Our Products</h1>
         <c:if test="${isAdmin == true}">
             <a href="products?action=add" class="btn btn-success">
-                <i class="fas fa-plus"></i> Add New Product
+                <i class="fas fa-plus"></i> Thêm sản phẩm
             </a>
         </c:if>
     </div>

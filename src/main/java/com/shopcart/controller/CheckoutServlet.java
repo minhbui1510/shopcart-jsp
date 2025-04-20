@@ -19,42 +19,74 @@ public class CheckoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        // Check if user is logged in
+        // Redirect to login if user is not logged in
         if (user == null) {
-            // Store the intended URL to redirect back after login
-            session.setAttribute("redirectAfterLogin", "/checkout");
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect("login?redirect=checkout");
             return;
         }
 
-        // Check if cart has items
+        // Check if cart is empty
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null || cart.getItems().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/cart");
+            response.sendRedirect("cart");
             return;
         }
 
+        // Forward to checkout page
         request.getRequestDispatcher("/checkout.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-        // Process payment (simplified for demonstration)
-        String paymentMethod = request.getParameter("paymentMethod");
-        String shippingAddress = request.getParameter("shippingAddress");
-
-        // Generate order and save to database (not implemented in this demo)
-
-        // Clear the cart
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart != null) {
-            cart.clear();
+        // Redirect to login if user is not logged in
+        if (user == null) {
+            response.sendRedirect("login?redirect=checkout");
+            return;
         }
 
-        // Show order confirmation
-        request.setAttribute("orderComplete", true);
-        request.getRequestDispatcher("/checkout-success.jsp").forward(request, response);
+        // Get cart from session
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null || cart.getItems().isEmpty()) {
+            response.sendRedirect("cart");
+            return;
+        }
+
+        // Validate checkout form fields
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String shippingAddress = request.getParameter("shippingAddress");
+        String paymentMethod = request.getParameter("paymentMethod");
+
+        boolean isValid = true;
+        if (fullName == null || fullName.trim().isEmpty()) {
+            request.setAttribute("fullNameError", "Vui lòng nhập họ tên");
+            isValid = false;
+        }
+
+        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
+            request.setAttribute("emailError", "Vui lòng nhập email hợp lệ");
+            isValid = false;
+        }
+
+        if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
+            request.setAttribute("addressError", "Vui lòng nhập địa chỉ");
+            isValid = false;
+        }
+
+        if (paymentMethod == null || paymentMethod.trim().isEmpty()) {
+            request.setAttribute("paymentError", "Vui lòng chọn phương thức thanh toán");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            request.getRequestDispatcher("/checkout.jsp").forward(request, response);
+            return;
+        }
+
+        // Forward to OrderServlet to create the order
+        request.getRequestDispatcher("/order").forward(request, response);
     }
 }

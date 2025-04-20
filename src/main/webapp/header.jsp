@@ -18,9 +18,6 @@
                     <a class="nav-link" style="color: white" href="${pageContext.request.contextPath}/products">SẢN PHẨM</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="${pageContext.request.contextPath}/projects">CÔNG TRÌNH</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" style="color: white" href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a>
                 </li>
                 <li class="nav-item">
@@ -48,12 +45,10 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Welcome, ${user.fullName}
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${user.fullName}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">My Profile</a>
-                                <a class="dropdown-item" href="#">My Orders</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/order">My Orders</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
                             </div>

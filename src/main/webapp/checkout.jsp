@@ -18,12 +18,12 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0">Shipping Information</h5>
+                    <h5 class="mb-0">Thông tin vận chuyển</h5>
                 </div>
                 <div class="card-body">
                     <form action="checkout" method="post" id="checkoutForm">
                         <div class="form-group">
-                            <label for="fullName">Full Name</label>
+                            <label for="fullName">Họ và tên</label>
                             <input type="text" class="form-control" id="fullName" name="fullName" value="${user.fullName}" required>
                         </div>
 
@@ -33,17 +33,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="shippingAddress">Shipping Address</label>
+                            <label for="shippingAddress">Địa chỉ</label>
                             <textarea class="form-control" id="shippingAddress" name="shippingAddress" rows="3" required>${user.address}</textarea>
                         </div>
 
                         <div class="form-group">
-                            <label for="paymentMethod">Payment Method</label>
+                            <label for="paymentMethod">Phương thức thanh toán</label>
                             <select class="form-control" id="paymentMethod" name="paymentMethod" required>
-                                <option value="">Select Payment Method</option>
-                                <option value="creditCard">Credit Card</option>
-                                <option value="paypal">PayPal</option>
-                                <option value="bankTransfer">Bank Transfer</option>
+                                <option value="">Chọn phương thức</option>
+                                <option value="cash">Thanh toán khi nhận hàng</option>
+                                <option value="banking">Chuyển khoản</option>
                             </select>
                         </div>
 
@@ -68,7 +67,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg mt-3">Place Order</button>
+                        <button type="submit" class="btn btn-primary btn-lg mt-3">Đặt hàng</button>
                     </form>
                 </div>
             </div>
@@ -77,7 +76,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Order Summary</h5>
+                    <h5 class="mb-0">Thanh toán khi nhận hàng</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -87,12 +86,12 @@
                                     <h6 class="my-0">${item.product.name}</h6>
                                     <small class="text-muted">Quantity: ${item.quantity}</small>
                                 </div>
-                                <span class="text-muted">${item.subtotal} USD</span>
+                                <span class="text-muted">${item.subtotal} VND</span>
                             </li>
                         </c:forEach>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (USD)</span>
-                            <strong>${cart.totalPrice} USD</strong>
+                            <span>Tổng (VND)</span>
+                            <strong>${cart.totalPrice} VND</strong>
                         </li>
                     </ul>
                 </div>
@@ -106,16 +105,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#paymentMethod').change(function() {
-            if ($(this).val() === 'creditCard') {
-                $('#creditCardDetails').removeClass('d-none');
-            } else {
-                $('#creditCardDetails').addClass('d-none');
-            }
-        });
-    });
-</script>
 </body>
 </html>

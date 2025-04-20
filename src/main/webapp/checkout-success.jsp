@@ -13,11 +13,11 @@
 
 <div class="container mt-4 mb-4">
     <div class="jumbotron text-center">
-        <h1 class="display-4">Thank You!</h1>
-        <p class="lead">Your order has been placed successfully.</p>
+        <h1 class="display-4">Cảm ơn bạn!</h1>
+        <p class="lead">Đơn hàng của bạn đã được đặt thành công.</p>
         <hr class="my-4">
-        <p>An email confirmation has been sent to your email address.</p>
-        <a class="btn btn-primary btn-lg" href="products" role="button">Continue Shopping</a>
+        <p>Một email xác nhận đã được gửi đến địa chỉ email của bạn.</p>
+        <a class="btn btn-primary btn-lg" href="products" role="button">Tiếp tục mua sắm</a>
     </div>
 </div>
 

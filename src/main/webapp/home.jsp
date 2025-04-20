@@ -239,7 +239,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="project-item">
-                    <img src="${pageContext.request.contextPath}/assets/images/project-1.jpg" class="img-fluid" alt="Project 1">
+                    <img src="https://vcdn1-kinhdoanh.vnecdn.net/2020/11/05/image001-4724-1604563462.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=zKux_wrq2tvjUfK72mzXZw" class="img-fluid" alt="Project 1">
                     <div class="project-overlay">
                         <h5>DALAT HASFARM</h5>
                         <small>CỬA HÀNG</small>
@@ -248,7 +248,7 @@
             </div>
             <div class="col-md-4">
                 <div class="project-item">
-                    <img src="${pageContext.request.contextPath}/assets/images/project-2.jpg" class="img-fluid" alt="Project 2">
+                    <img src="https://www.qtsc.com.vn/uploads/files/2019/04/24/sps-dat-2-giai-sao-khue_01.jpg" class="img-fluid" alt="Project 2">
                     <div class="project-overlay">
                         <h5>SPS VIỆT NAM</h5>
                         <small>CÔNG TY</small>
@@ -257,17 +257,13 @@
             </div>
             <div class="col-md-4">
                 <div class="project-item">
-                    <img src="${pageContext.request.contextPath}/assets/images/project-3.jpg" class="img-fluid" alt="Project 3">
+                    <img src="https://www.xenguyenvinh.com/Portals/28264/Hoan/tan-son-nhat-2.jpg" class="img-fluid" alt="Project 3">
                     <div class="project-overlay">
                         <h5>SÂN BAY QUỐC TẾ TÂN SƠN NHẤT</h5>
                         <small>SÂN BAY</small>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="text-center mt-4">
-            <a href="${pageContext.request.contextPath}/projects" class="btn btn-outline-primary">Xem tất cả dự án</a>
         </div>
     </div>
 </section>
