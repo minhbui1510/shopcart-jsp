@@ -15,6 +15,7 @@ public class Order {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private List<OrderItem> orderItems;
+    private String username; // Added for admin view
 
     public Order() {
         this.orderItems = new ArrayList<>();
@@ -104,5 +105,13 @@ public class Order {
 
     public void addOrderItem(OrderItem item) {
         this.orderItems.add(item);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

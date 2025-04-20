@@ -47,18 +47,25 @@ public class OrderServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("id"));
             Order order = orderDAO.getOrderById(orderId);
 
-            // Check if order belongs to current user
-            if (order != null && order.getUserId() == user.getId()) {
+            // Check if order belongs to current user or if user is admin
+            if (order != null && (order.getUserId() == user.getId() || "admin".equals(user.getRole()))) {
                 request.setAttribute("order", order);
                 request.getRequestDispatcher("/order-details.jsp").forward(request, response);
             } else {
                 response.sendRedirect("orders");
             }
         } else {
-            // View all orders for the current user
-            List<Order> orders = orderDAO.getOrdersByUserId(user.getId());
-            request.setAttribute("orders", orders);
-            request.getRequestDispatcher("/orders.jsp").forward(request, response);
+            // If user is admin, get all orders
+            if ("admin".equals(user.getRole())) {
+                List<Order> orders = orderDAO.getAllOrders();
+                request.setAttribute("orders", orders);
+                request.getRequestDispatcher("/admin-orders.jsp").forward(request, response);
+            } else {
+                // View all orders for regular users
+                List<Order> orders = orderDAO.getOrdersByUserId(user.getId());
+                request.setAttribute("orders", orders);
+                request.getRequestDispatcher("/orders.jsp").forward(request, response);
+            }
         }
     }
 
@@ -73,6 +80,26 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
+        String action = request.getParameter("action");
+
+        // Handle order status update (admin only)
+        if (action != null && action.equals("updateStatus") && "admin".equals(user.getRole())) {
+            int orderId = Integer.parseInt(request.getParameter("id"));
+            String newStatus = request.getParameter("status");
+
+            boolean updated = orderDAO.updateOrderStatus(orderId, newStatus);
+
+            if (updated) {
+                request.setAttribute("successMessage", "Cập nhật trạng thái đơn hàng thành công");
+            } else {
+                request.setAttribute("errorMessage", "Cập nhật trạng thái đơn hàng thất bại");
+            }
+
+            response.sendRedirect("order");
+            return;
+        }
+
+        // Regular order processing
         // Get cart from session
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null || cart.getItems().isEmpty()) {

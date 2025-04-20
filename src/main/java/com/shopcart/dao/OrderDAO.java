@@ -1,6 +1,5 @@
 package com.shopcart.dao;
 
-
 import com.shopcart.model.Order;
 import com.shopcart.model.OrderItem;
 import com.shopcart.util.DBConnection;
@@ -160,6 +159,38 @@ public class OrderDAO {
                 order.setPaymentMethod(rs.getString("payment_method"));
                 order.setCreatedAt(rs.getTimestamp("created_at"));
                 order.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
+    public List<Order> getAllOrders() {
+        String sql = "SELECT o.*, u.username FROM orders o " +
+                "JOIN users u ON o.user_id = u.id " +
+                "ORDER BY o.created_at DESC";
+        List<Order> orders = new ArrayList<>();
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setUserId(rs.getInt("user_id"));
+                order.setTotalAmount(rs.getDouble("total_amount"));
+                order.setShippingAddress(rs.getString("shipping_address"));
+                order.setOrderStatus(rs.getString("order_status"));
+                order.setPaymentMethod(rs.getString("payment_method"));
+                order.setCreatedAt(rs.getTimestamp("created_at"));
+                order.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+                // Add username as a property to display in admin view
+                order.setUsername(rs.getString("username"));
 
                 orders.add(order);
             }

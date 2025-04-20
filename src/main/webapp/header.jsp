@@ -23,6 +23,11 @@
                 <li class="nav-item">
                     <a class="nav-link" style="color: white" href="${pageContext.request.contextPath}/contact">LIÊN HỆ</a>
                 </li>
+                <c:if test="${user.role == 'admin'}">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: white" href="${pageContext.request.contextPath}/order">DANH SÁCH ĐƠN HÀNG</a>
+                    </li>
+                </c:if>
             </ul>
 <%--            <div class="ml-auto">--%>
 <%--                <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-primary ml-2">ĐĂNG NHẬP</a>--%>
@@ -48,9 +53,9 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${user.fullName}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/order">My Orders</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/order">Đơn hàng</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
                             </div>
                         </li>
                     </c:otherwise>

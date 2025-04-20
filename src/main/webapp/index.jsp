@@ -57,8 +57,8 @@
                         <c:if test="${isAdmin == true}">
                             <div class="admin-controls mt-2">
                                 <div class="d-flex justify-content-between">
-                                    <a href="products?action=edit&id=${product.id}" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" onclick="confirmDelete(${product.id})" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="products?action=edit&id=${product.id}" class="btn btn-warning btn-sm">Sửa</a>
+                                    <a href="#" onclick="confirmDelete(${product.id})" class="btn btn-danger btn-sm">Xoá</a>
                                 </div>
                             </div>
                         </c:if>
