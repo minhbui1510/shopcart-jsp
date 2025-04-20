@@ -31,9 +31,22 @@ public class ProductServlet extends HttpServlet {
         // Add isAdmin attribute to the request (for use in JSPs)
         request.setAttribute("isAdmin", isAdmin);
 
+        // Get filter parameters (if any)
+        String nameFilter = request.getParameter("name");
+        String minPriceStr = request.getParameter("minPrice");
+        String maxPriceStr = request.getParameter("maxPrice");
+
+        Double minPrice = minPriceStr != null && !minPriceStr.isEmpty() ? Double.parseDouble(minPriceStr) : null;
+        Double maxPrice = maxPriceStr != null && !maxPriceStr.isEmpty() ? Double.parseDouble(maxPriceStr) : null;
+
         if (action == null) {
-            // Display all products
-            List<Product> productList = productDAO.getAllProducts();
+            // Display all products (with optional filtering)
+            List<Product> productList;
+            if (nameFilter != null || minPrice != null || maxPrice != null) {
+                productList = productDAO.getFilteredProducts(nameFilter, minPrice, maxPrice);
+            } else {
+                productList = productDAO.getAllProducts();
+            }
             request.setAttribute("products", productList);
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else if (action.equals("details")) {
@@ -114,6 +127,24 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("product", product);
                 request.getRequestDispatcher("/product-form.jsp").forward(request, response);
             }
+        } else if ("filter".equals(action)) {
+            // Handle filtering (redirecting to GET with parameters)
+            String nameFilter = request.getParameter("name");
+            String minPrice = request.getParameter("minPrice");
+            String maxPrice = request.getParameter("maxPrice");
+
+            StringBuilder redirectUrl = new StringBuilder("products?");
+            if (nameFilter != null && !nameFilter.isEmpty()) {
+                redirectUrl.append("name=").append(nameFilter).append("&");
+            }
+            if (minPrice != null && !minPrice.isEmpty()) {
+                redirectUrl.append("minPrice=").append(minPrice).append("&");
+            }
+            if (maxPrice != null && !maxPrice.isEmpty()) {
+                redirectUrl.append("maxPrice=").append(maxPrice).append("&");
+            }
+
+            response.sendRedirect(redirectUrl.toString());
         } else {
             response.sendRedirect("products");
         }

@@ -217,7 +217,7 @@
                             <p class="card-text">${product.description}</p>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="font-weight-bold text-primary">${product.price} VNĐ</span>
-                                <a href="${pageContext.request.contextPath}/product?id=${product.id}" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                                <a href="${pageContext.request.contextPath}/products?action=details&id=${product.id}" class="btn btn-sm btn-outline-primary">Chi tiết</a>
                             </div>
                         </div>
                     </div>

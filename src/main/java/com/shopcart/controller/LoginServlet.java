@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null) {
             // User is already logged in
-            response.sendRedirect(request.getContextPath() + "/products");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
 
@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
                     session.removeAttribute("redirectAfterLogin");
                     response.sendRedirect(request.getContextPath() + redirectURL);
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/products");
+                    response.sendRedirect(request.getContextPath() + "/home");
                 }
             } else {
                 request.setAttribute("errorMessage", "Invalid username or password");

@@ -32,6 +32,59 @@ public class ProductDAO {
         return products;
     }
 
+    public List<Product> getFilteredProducts(String nameFilter, Double minPrice, Double maxPrice) {
+        List<Product> products = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM products WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        // Add name filter if provided
+        if (nameFilter != null && !nameFilter.trim().isEmpty()) {
+            sql.append("AND LOWER(name) LIKE ? ");
+            params.add("%" + nameFilter.toLowerCase() + "%");
+        }
+
+        // Add price range filters if provided
+        if (minPrice != null) {
+            sql.append("AND price >= ? ");
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null) {
+            sql.append("AND price <= ? ");
+            params.add(maxPrice);
+        }
+
+        sql.append("ORDER BY id DESC");
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getDouble("price"));
+                product.setImageUrl(rs.getString("image_url"));
+                product.setStockQuantity(rs.getInt("stock_quantity"));
+                products.add(product);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
+    }
+
     public Product getProductById(int id) {
         Product product = null;
         try (Connection conn = DBConnection.getConnection();
