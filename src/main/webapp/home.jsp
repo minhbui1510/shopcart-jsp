@@ -138,8 +138,8 @@
         <div class="carousel-item active">
             <img src="https://www.vivotek.vn/wp-content/uploads/2025/04/ma-banner_result.webp" class="d-block w-100" alt="Slider Image 1">
             <div class="carousel-caption d-none d-md-block">
-                <h1>Upgrade your NVR Experience</h1>
-                <p class="lead">Unlock your surveillance potential with VORTEX</p>
+                <h1>Nâng cấp trải nghiệm</h1>
+                <p class="lead">Mở khóa tiềm năng giám sát của bạn với VORTEX</p>
             </div>
         </div>
         <div class="carousel-item">

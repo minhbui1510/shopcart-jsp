@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Đơn Hàng Của Tôi - Cửa Hàng Trực Tuyến</title>
+  <title>Đơn Hàng Của Tôi</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <style>

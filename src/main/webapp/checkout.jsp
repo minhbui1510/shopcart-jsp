@@ -12,8 +12,6 @@
 <jsp:include page="header.jsp" />
 
 <div class="container mt-4 mb-4">
-    <h1>Checkout</h1>
-
     <div class="row mt-4">
         <div class="col-md-8">
             <div class="card mb-4">
@@ -84,7 +82,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     <h6 class="my-0">${item.product.name}</h6>
-                                    <small class="text-muted">Quantity: ${item.quantity}</small>
+                                    <small class="text-muted">Số lượng: ${item.quantity}</small>
                                 </div>
                                 <span class="text-muted">${item.subtotal} VND</span>
                             </li>
